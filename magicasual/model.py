@@ -32,8 +32,8 @@ class MagiCasualLLM(nn.Module):
         logits=self.lm_head(self.norm(x))
         loss=None
         if labels is not None:
-            loss=F.cross_entropy(logits[:,:-1].contiguous().view(-1,self.cfg.vocab_size),
-                                 labels[:,1:].contiguous().view(-1))
+            loss=F.cross_entropy(logits.contiguous().view(-1,self.cfg.vocab_size),
+                                 labels.contiguous().view(-1))
         return logits,loss
     @torch.no_grad()
     def generate(self,ids,max_new_tokens=64,temperature=0.8,top_k=40,eos_id=None):
